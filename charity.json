@@ -1,8 +1,8 @@
 {
-    "Info": [
+    "info": [
 
         {
-            "name":"Charity",
+            "name":"charity",
             "level":2,
             "iswizard":true,
             "iswarrior":false,
@@ -24,60 +24,60 @@
             "temp_luck_bonus":0
         }
     ],
-    "Weapons":
+    "weapons":
     [
         
         {
-            "name": "Shortsword",
+            "name": "shortsword",
             "num_dice":1,
             "dice_level":"d6"
         },
         
         {
-            "name":"Shortbow",
+            "name":"shortbow",
             "num_dice":1,
             "dice_level":"d6"
         }
     ], 
-    "Spells":[
+    "spells":[
         "Note to self: i might be able to use the JSON file to pull the different effects of spells",
     {
-        "name": "Find Fammiliar",
+        "name": "find fammiliar",
         "page_number":141,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": ["Hard cast",{"dice_level":"d14"}]
     },
     {
-        "name": "Rune Alphabet",
+        "name": "rune alphabet",
         "page_number":154,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": null
     },
     {
-        "name": "Magic Missile",
+        "name": "magic missile",
         "page_number":144,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": ["Additional attack", {"dice_level":"d6"}]
     },
     {
-        "name": "Read Magic",
+        "name": "read magic",
         "page_number":151,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": null
     },
     {
-        "name": "Charm Person",
+        "name": "charm person",
         "page_number":131,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": ["Whimsical patron",{"dice_level":"d6"}]
     },
     {
-        "name": "Sleep",
+        "name": "sleep",
         "page_number":155,
         "forgotten": false,
         "spell_check": 4,

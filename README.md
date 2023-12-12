@@ -26,4 +26,4 @@ More complex tasks I wish to achieve are:
    - Create a GUI to make things pretty and handle the character editing.
 
  # Current project phase:
- Current phase of the project is Planning.
+ Current phase of the project is Planning and reserch.

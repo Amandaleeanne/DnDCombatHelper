@@ -1,22 +1,46 @@
 
 from roller import Dice
 import csv
+import os
+import json
 class Character():
 
-    def __init__(self, name:str,level:int,warrior: False, wizard: False, cleric: False, thief:False,AC:int,HP:int,strength_bonus:int,agility_bonus:int,stamina_bonus:int,personality_bonus:int,luck_bonus:int, weapon_count:int, spell_count:int
-):
-        self.spell_bonus = spell_bonus
-        self.d20attack_bonus = d20attack_bonus
-        self.attack_bonus = attack_bonus
-        self.missile_bonus = missile_bonus
-        self.initiative = initiative
-        self.name = name
-        self.warrior = warrior
+    def __init__(self, character:str):
+        #Get name
+        self.name = character
+        #Open Json file will corrent name
+        with open('{}.json'.format(self.name), 'r') as f:
+            data = json.load(f)
+
     def __str__(self) -> str:
         """Returns a string representation of Character class"""
         return "The character {} has a attack bonus of {} , melee bonus of {}, and spell check of {}".format(self.attack_bonus, self.melee_bonus,self.spell_check)
-    def changeValue(self, file):
-        pass
+    def changeValue(self, number:int, value:str):
+        """Changes the temporary value of the character, ENTER IN POSITIVE OR NEGITIVE"""
+        #Open Json file will corrent name
+        valid = ["ac","hp","strength","agility","stamina","personality","luck"]
+        with open('{}.json'.format(self.name), 'r') as f:
+            data = json.load(f)
+        try:
+            if value not in valid:
+                raise ValueError
+            else:
+                if value == "ac":
+                    pass
+                elif value == "hp":
+                    pass
+                elif value == "strength":
+                    pass
+                elif value == "agility":
+                    pass
+                elif value == "stamina":
+                    pass
+                elif value == "personality":
+                    pass
+                elif value == "luck":
+                    pass
+        except ValueError:
+            print("Invalue value to change given. valid: ac,hp,strength,agility,stamina,personality,luck")
                 
 
 
@@ -47,5 +71,3 @@ class Character():
                 roll += feat
                 return "Feat fail {}. Rolled a {}, base {}".format(feat,roll, base)
         return "Rolled a {}, base {}".format(roll, base)
-someone = Character(1, 1, 1, 1, 1, "someone", False)
-print(someone.spellcast())
