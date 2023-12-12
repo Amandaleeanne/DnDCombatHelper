@@ -15,21 +15,7 @@ class Character():
     def __str__(self) -> str:
         """Returns a string representation of Character class"""
         return "The character {} has a attack bonus of {} , melee bonus of {}, and spell check of {}".format(self.attack_bonus, self.melee_bonus,self.spell_check)
-    def new_Character(self):
-        pass
-    def get_character(self):
-
-        with open('characters.csv'.format(self.name), 'r') as f:
-            reader = csv.DictReader(f)
-            for line in reader:
-                self.spell_bonus = line['spell_bonus']
-                self.d20attack_bonus = line['d20attack_bonus']
-                self.attack_bonus = line['attack_bonus']
-                self.missile_bonus = line['missile_bonus']
-                self.initiative = line['initiative']
-                self.name = line['name']
-                self.warrior = line['warrior']
-    def changeValue(self, value):
+    def changeValue(self, file):
         pass
                 
 
