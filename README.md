@@ -20,10 +20,10 @@ More complex tasks I wish to achieve are:
    - Entering in all of the spells In the rulebook I am using and then call that method to determine success and its effects.
    - The ability to create [[Characters]] and add, edit, and remove a character bonuses or stats
    - The ability to temporarily reduce or improve stats or remove the ability to use a spell based on real time rolling in the app. This includes resetting those values
-   - Create a GUI to make things pretty and handle the character editing.
 
 ## Streach Goals:
-	- Make program applicable to all rulesets?
+   - Make program applicable to all rulesets?
+   - Create a GUI to make things pretty and handle the character editing.
 
  # Current project phase:
  Current phase of the project is Planning.
