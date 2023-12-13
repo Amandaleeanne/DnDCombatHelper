@@ -1,0 +1,12 @@
+{
+    "wizard": [
+        {
+            "name": "magic missile"
+        }
+    ],
+    "cleric":[
+        {
+            "name": "blessing"
+        }
+    ]
+}

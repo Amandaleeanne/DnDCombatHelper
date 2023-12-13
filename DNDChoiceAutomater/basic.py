@@ -12,16 +12,17 @@ def spellcast(bonus):
 def attackk(bonus, warrior):
     roll = Dice.d20(bonus)
     feat_sucsess = False
+    #insert natural crit and fumble here.
     if warrior:
         feat = Dice.d4(4)
         total = roll[1] + feat[1]
         if feat[0] >= 3:
             feat_sucsess = True
         if feat_sucsess:
-            return "Feat sucseeded {}. Total {}, base {}".format(feat,total, roll[0])
+            return "Feat sucseeded {}. Total {}, die roll {}, bonus {}".format(feat,total, roll[0], bonus)
         else:
-            return "Feat fail {}. Total {}, base {}".format(feat,total, roll[0])
-    return "Rolled a {}, base {}".format(roll[1], roll[0])
+            return "Feat fail {}. Total {}, die roll {}, bonus {}".format(feat,total, roll[0], bonus)
+    return "Rolled a {}, die roll {}".format(roll[1], roll[0])
 
 def main():
     exit = False
