@@ -2,9 +2,9 @@
 from roller import Dice
 import json
 import os
-#Handles the JSON files and reads and edits them based on main script.
 class Character():
-
+    """Handles the JSON files and reads and edits them based on main script."""
+#----------------------Initalizing Methods --------------------------------
     def __init__(self, character:str): 
     #{
         #Ensure you are in the correct directory:
@@ -12,106 +12,162 @@ class Character():
         #Get name
         self.name = character
         #if file with name exists:
-        self._initilize_character()
+        self._get_character()
         #else:
-        #make a new character
-        
+        #make a new character  
     #}
 
     def __str__(self) -> str:
+    #{
         """Returns a string representation of Character class, giving information about the current character."""
-        if self.char_info["iswizard"] == True or self.char_info["iscleric"] == True:
+
+        if self.spellcaster is True:
             if self.char_info["iswizard"] == True:
-                return "The character {} is a Wizard, and knows spells {}. Their HP is {}, AC is {}, and have a base spell bonus of {}".format(self.name, self.spellList, self.char_info["hp"], self.char_info["ac"],(self.char_info["level"]+self.char_info["intellect_bonus"]))
+                return "The character {}{} is a Wizard, and knows spells {}. Their HP is {}, AC is {}, and have a base spell bonus of {}".format(self.name[0].upper(), self.name[1:], self.spellList, self.char_info["hp"], self.char_info["ac"],(self.char_info["level"]+self.char_info["intellect_bonus"]))
             else:
-                return "The character {} is a Cleric, and knows spells {}. Their HP is {}, AC is {}, and have a base spell bonus of {}".format(self.name, self.spellList, self.char_info["hp"], self.char_info["ac"],(self.char_info["level"]+self.char_info["intellect_bonus"]))
+                return "The character {}{} is a Cleric, and knows spells {}. Their HP is {}, AC is {}, and have a base spell bonus of {}".format(self.name[0].upper(), self.name[1:], self.spellList, self.char_info["hp"], self.char_info["ac"],(self.char_info["level"]+self.char_info["intellect_bonus"]))
         elif self.char_info["iswarrior"]== True:
-            return "The character {} is a Warrior.".format(self.name)
+            return "The character {}{} is a Warrior.".format(self.name[0].upper(), self.name[1:])
         else:
-            return "The character {} is a Thief".format(self.name)
-        
-        
-    #Note the JSON spell file will handle all the the spell effects from 12-32 as i belive it is the same for every spell. Then the helper function here will simply get what that spell does
-    def _initilize_character(self):
-        #Open Character Json file will correct name
-        with open('{}.json'.format(self.name), 'r') as f:
-            infoData = json.load(f)
+            return "The character {}{} is a Thief".format(self.name[0].upper(), self.name[1:])
+    #}
+
+    
+    def _get_character(self):
+    #{
+        """Reads existing JSON file and loads nessisary info into environment"""
         #Load data into current environment
-        self.infoData = infoData
+        with open('{}.json'.format(self.name), 'r') as f:
+            self.infoData = json.load(f)
+        
         #initialize one element list:
-        self.char_info = infoData['info'][0]
+        self.char_info = self.infoData['info'][0]
+        self.char_spellData = self.infoData['spells']
         #Check to see if character is a spellcaster:
         if self.char_info["iswizard"] is True or self.char_info["iscleric"] is True:
-            #Open spells Json file
-            with open('spells.json', 'r') as f:
-                spellData = json.load(f)
+            self.spellcaster = True
             #Load data into current environment
-            self.spellData = spellData
+            with open('spells.json', 'r') as f:
+                self.spellData = json.load(f)
+
             #Get spells from character and add to spell list:
             self.spellList = []
             #For every spell
             for spell in self.infoData["spells"]:
                 #get spell name and add to list
                 self.spellList.append(spell['name'])
+                '''@TODO: Note the JSON spell file will handle all the the spell effects from 12-32 
+                as i belive it is the same for every spell. 
+                Then the helper function here will simply get what that spell does'''
+    #}
     #TODO: make method
     def _new_character(self):
+    #{
         pass
-    def changeValue(self, number:int, value:str, reset:bool=False):
-        """Changes the temporary value of the character, ENTER IN POSITIVE OR NEGITIVE"""
-        #Apply valid values
-        valid_values = ["ac","hp","strength","agility","stamina","personality","luck"]
+    #}
+#----------------------Non Initalizing Methods: Change and set --------------------------------
+
+    def changeValue(self, value:str, number:int=0, reset:bool=False):
+    #{
+        """
+        Changes the temporary value of the character, ENTER IN POSITIVE OR NEGITIVE. 
+        Default value for resetting the temporary value is False.
+
+        """
+        
+        #Initalize valid values
+        valid_value_map = {
+                "ac": "temp_AC",
+                "hp": "temp_hp",
+                "strength_bonus": "temp_strength_bonus",
+                "agility_bonus": "temp_agility_bonus",
+                "stamina_bonus": "temp_stamina_bonus",
+                "personality_bonus": "temp_personality_bonus",
+                "luck_bonus": "temp_luck_bonus",
+                "intellect_bonus": "temp_intellect_bonus",
+                }
+
         #Check to see if there is a valid value to change
         try:
-            if value not in valid_values:
+            if value not in valid_value_map:
                 raise ValueError
             else:
-                #If there is, check to see if we are removing or adding the bonus.
-                #If you are adding the bonus:
+                #If there is, check to see if its removing or adding the bonus.
                 if not reset:
-                    self._calculateValue(number, value)
+                    self._calculateValue(number, value, valid_value_map)
                 else:
-                    self._resetValue(number, value)
+                    self._resetValue(value, valid_value_map)
         except ValueError:
-            print("Invalue value to change given. valid: ac,hp,strength,agility,stamina,personality,luck")
+            print("ValueError: Invalue value to change given. valid: \n{}".format(valid_value_map))
+    #}
 
-    #calculates new temporary value based on given number
-    def _calculateValue(self, number, value):
-        if value == "ac":
-            self.char_info["temp_AC"] += number
-        elif value == "hp":
-            self.char_info["temp_AC"] += number
-        elif value == "strength":
-            pass
-        elif value == "agility":
-            pass
-        elif value == "stamina":
-            pass
-        elif value == "personality":
-            pass
-        elif value == "luck":
-            pass
+    def setValue(self, value:str, boolValue:bool=False, number:int=0, spellName:str=None):
+    #{
+        """
+        Sets the permanent value of a character to number or boolean given.
+        If setting a spell bool to True or False, give the spell name and value = 'forgotten'.
+    
+        """
 
-    #Resets the temporary value to match the actual value
-    def _resetValue(self, value):
-        if value == "ac":
-            self.char_info["temp_AC"] = self.char_info["ac"]
-        elif value == "hp":
-            self.char_info["temp_hp"] = self.char_info["hp"]
-        elif value == "strength":
-            self.char_info["temp_strength_bonus"] = self.char_info["strength_bonus"]
-        elif value == "agility":
-            self.char_info["temp_agility_bonus"] = self.char_info["agility_bonus"]
-        elif value == "stamina":
-            self.char_info["temp_stamina_bonus"] = self.char_info["stamina_bonus"]
-        elif value == "personality":
-            self.char_info["temp_personality_bonus"] = self.char_info["personality_bonus"]
-        elif value == "luck":
-            self.char_info["temp_luck_bonus"] = self.char_info["luck_bonus"]
+        #Set and check values
+        valid_values = ['name', 'level', 'critdie_level', 'ac', 'hp', 'strength_bonus', 'feat_bonus', 'feat_die_level', 
+                        'agility_bonus', 'stamina_bonus', 'personality_bonus', 'luck_bonus', 'intellect_bonus']
+        valid_bool_values = ['iswizard', 'iswarrior', 'isthief', 'iscleric', 'forgotten']
+        try:
+            if value not in valid_values or value not in valid_bool_values: raise ValueError
+            else:
+                #If valid, determine if changing a boolean value.
+
+                if value not in valid_bool_values: 
+                    self.char_info[value] = number
+                #It is a bool value, check to see if you are editing the 'forgotten' spell value.
+                else:
+                    if value == 'forgotten':
+                        #see if the spell is valid:
+
+                        try:
+                            if spellName not in self.spellList:
+                                raise ValueError
+                            else:
+                                #get the spell to forget
+
+                                for spell in self.infoData['spells']:
+                                    if spell['name'] is spellName:
+                                    #change the spell to the boolean value;
+                                        spell['forgotten'] = boolValue
+                        except:
+                            print("Invalid value to change given. valid: {}".format(self.spellList))
+                    #Value is not 'forgotten', change value to boolValue:
+
+                    else:
+                        self.char_info[value] = boolValue
+        except ValueError:
+            print("Invalue value to change given. valid: {}\n or {}".format(valid_values, valid_bool_values))
+    #}
+   
+    def _resetValue(self, value, valid_value_map): #WORKING
+    #{
+        """Resets the temporary value to match the actual value"""
+        key = valid_value_map.get(value)
+        self.char_info[key] == self.char_info.get(value)
+    #}
+    
+    def _calculateValue(self, number, value, valid_value_map): #WORKING
+    #{
+        """Calculates new temporary value based on given number and value keys."""
+        key = valid_value_map.get(value)
+        self.char_info[key] += number
+    #}
 
 
 # Test area:
 Charity = Character("charity")
 print(Charity)
+'''
+Charity.changeValue(1, "hp")
+Charity.changeValue("hp", True)
+'''
+
     
 
    

@@ -46,35 +46,35 @@
     ], 
     "spells":[
     {
-        "name": "find fammiliar",
+        "name": "findFammiliar",
         "page_number":141,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": ["Hard cast",{"dice_level":"d14"}]
     },
     {
-        "name": "rune alphabet",
+        "name": "runeAlphabet",
         "page_number":154,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": null
     },
     {
-        "name": "magic missile",
+        "name": "magicMissile",
         "page_number":144,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": ["Additional attack", {"dice_level": 6}]
     },
     {
-        "name": "read magic",
+        "name": "readMagic",
         "page_number":151,
         "forgotten": false,
         "spell_check": 4,
         "mercurial": null
     },
     {
-        "name": "charm person",
+        "name": "charmPerson",
         "page_number":131,
         "forgotten": false,
         "spell_check": 4,
