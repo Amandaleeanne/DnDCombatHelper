@@ -6,6 +6,7 @@ import os
 TODO:
 -Make the Character method create new characters
 -Save changed data
+-get what happens at different rolls of a character (might be handled by a different script)
 '''
 class Character():
     """Handles the JSON files and reads and edits them based on main script."""
