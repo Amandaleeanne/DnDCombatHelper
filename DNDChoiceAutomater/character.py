@@ -2,6 +2,11 @@
 from roller import Dice
 import json
 import os
+'''
+TODO:
+-Make the Character method create new characters
+-Save changed data
+'''
 class Character():
     """Handles the JSON files and reads and edits them based on main script."""
 #----------------------Initalizing Methods --------------------------------
@@ -10,7 +15,7 @@ class Character():
         #Ensure you are in the correct directory:
         os.chdir(os.path.dirname(__file__))
         #Get name
-        self.name = character
+        self.name = character.lower()
         #if file with name exists:
         self._get_character()
         #else:
@@ -65,7 +70,7 @@ class Character():
     #{
         pass
     #}
-#----------------------Non Initalizing Methods: Change and set --------------------------------
+#----------------------Non Initalizing Methods: Change --------------------------------
 
     def changeValue(self, value:str, number:int=0, reset:bool=False):
     #{
@@ -100,6 +105,20 @@ class Character():
         except ValueError:
             print("ValueError: Invalue value to change given. valid: \n{}".format(valid_value_map))
     #}
+
+    def _calculateValue(self, number, value, valid_value_map): #WORKING
+    #{
+        """Calculates new temporary value based on given number and value keys."""
+        key = valid_value_map.get(value)
+        self.char_info[key] += number
+    #}
+    def _resetValue(self, value, valid_value_map): #WORKING
+    #{
+        """Resets the temporary value to match the actual value"""
+        key = valid_value_map.get(value)
+        self.char_info[key] == self.char_info.get(value)
+    #}
+#----------------------Non Initalizing Methods: Set --------------------------------
 
     def setValue(self,value:str, number:int=0, boolValue:bool=False):
     #{
@@ -138,22 +157,27 @@ class Character():
                         break
         except:
             print("Invalid value to change given. \nvalid: {}\n given: {}".format(self.spellList, spellName))
-   
-    def _resetValue(self, value, valid_value_map): #WORKING
-    #{
-        """Resets the temporary value to match the actual value"""
-        key = valid_value_map.get(value)
-        self.char_info[key] == self.char_info.get(value)
-    #}
+    def setSpellcheck(self,spellName:str, number):
+        """
+        Changes a spells spell check value.
+        """
+        #see if the spell is valid:
+        try:
+            if spellName not in self.spellList:
+                raise ValueError
+            else:
+                #get the spell to for
+                for spell in self.infoData['spells']:
+                    if spell['name'] == spellName:
+                    #change the spell to the boolean value;
+                        spell['spell_check'] = number
+                        break
+        except:
+            print("Invalid value to change given. \nvalid: {}\n given: {}".format(self.spellList, spellName))
     
-    def _calculateValue(self, number, value, valid_value_map): #WORKING
-    #{
-        """Calculates new temporary value based on given number and value keys."""
-        key = valid_value_map.get(value)
-        self.char_info[key] += number
-    #}
 
-#------------------------------Get Methods ------------------------------
+#----------------------Non Initalizing Methods: Get --------------------------------
+
     def getSpellInfo(self, spellName, fullInfo:bool=False):
         """
         Returns info about a spell.
@@ -189,7 +213,7 @@ class Character():
                 return self._charSpelljsonFormatter(basicInfoData, fullInfo)
         except NameError:
             print("ERROR: Not a spellcaster")
-#--------------- MISC Methods--------------------------------
+#----------------------Non Initalizing Methods: MISC --------------------------------
     def _charSpelljsonFormatter(self, data, fullInfo:bool=False):
         """Formats and return spell data into a pretty formatted string.
            Helper method to getSpellInfo.
@@ -202,12 +226,16 @@ class Character():
             return basicInfoString + moreInfoString
         else:
             return basicInfoString
+    def _writeToFile(self):
+        pass
 
 
 
 
 # Test area:
 Charity = Character("charity")
+print(Charity)
+print (Charity.changeValue('hp', 1))
 print(Charity.getSpellInfo("magic_missile"))
 #setValue(value:str, boolValue:bool=False, number:int=0, spellName:str=None):
 Charity.setForgotten('magic_missile', True)
