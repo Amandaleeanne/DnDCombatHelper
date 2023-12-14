@@ -1,12 +1,14 @@
 {
     "wizard": [
         {
-            "name": "magic missile"
+            "name": "magic_missile",
+            "1rst_level": "12-13: Spell does one point of damage"
         }
     ],
     "cleric":[
         {
-            "name": "blessing"
+            "name": "blessing",
+            "1rst_level":"12-13: Spell gives caster +1 attack"
         }
     ]
 }

@@ -185,21 +185,23 @@ class Character():
                                 break
                     #Combine data dictionaries
                     allSpellData= {**basicInfoData, **fullSpellInfo}
-                    return self._charSpelljsonFormatter(allSpellData)
-                return self._charSpelljsonFormatter(basicInfoData, False)
+                    return self._charSpelljsonFormatter(allSpellData, fullInfo)
+                return self._charSpelljsonFormatter(basicInfoData, fullInfo)
         except NameError:
             print("ERROR: Not a spellcaster")
 #--------------- MISC Methods--------------------------------
-    def _charSpelljsonFormatter(self, data, basicInfoData:bool=False):
+    def _charSpelljsonFormatter(self, data, fullInfo:bool=False):
         """Formats and return spell data into a pretty formatted string.
            Helper method to getSpellInfo.
            """
+        forgotten_status = "not been forgotten" if not data['forgotten'] else "been forgotten"
+        basicInfoString = "Spell {} has {} and its mercirual magic is {}. Spell check for this spell is +{} and you can find more info on page {}.".format(data['name'], forgotten_status, data['mercurial'],data['spell_check'], data['page_number'])
         #Depedning on basicInfoData then return a different string.
-        if basicInfoData:
-            forgotten_status = "not been forgotten" if not data['forgotten'] else "been forgotten"
-            return "Spell {} has {} and its mercirual magic is {}. Spell check for this spell is +{} and you can find more info on page {}".format(data['name'], forgotten_status, data['mercurial'],data['spell_check'], data['page_number'])
+        if fullInfo:
+            moreInfoString = "\nSpell tier and its effects:\n {}".format(data['1rst_level'])
+            return basicInfoString + moreInfoString
         else:
-            pass
+            return basicInfoString
 
 
 
@@ -209,7 +211,7 @@ Charity = Character("charity")
 print(Charity.getSpellInfo("magic_missile"))
 #setValue(value:str, boolValue:bool=False, number:int=0, spellName:str=None):
 Charity.setForgotten('magic_missile', True)
-print(Charity.getSpellInfo("magic_missile"))
+print(Charity.getSpellInfo("magic_missile", True))
 
 
     
