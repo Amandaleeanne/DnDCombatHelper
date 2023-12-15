@@ -1,5 +1,6 @@
 
 from roller import Dice
+from jsonhandler import JSONHandler as charjson
 import json
 import os
 '''
@@ -44,11 +45,11 @@ class Character():
         """Reads existing JSON file and loads nessisary info into environment"""
         #Load data into current environment
         with open('{}.json'.format(self.name), 'r') as f:
-            self.infoData = json.load(f)
+            self.data = json.load(f)
         
         #initialize one element list:
-        self.char_info = self.infoData['info'][0]
-        self.char_spellData = self.infoData['spells']
+        self.char_info = self.data['info'][0]
+        self.char_spellData = self.data['spells']
         #Check to see if character is a spellcaster:
         if self.char_info["iswizard"] is True or self.char_info["iscleric"] is True:
             self.spellcaster = True
@@ -59,7 +60,7 @@ class Character():
             #Get spells from character and add to spell list:
             self.spellList = []
             #For every spell
-            for spell in self.infoData["spells"]:
+            for spell in self.data["spells"]:
                 #get spell name and add to list
                 self.spellList.append(spell['name'])
                 '''@TODO: Note the JSON spell file will handle all the the spell effects from 12-32 
@@ -121,44 +122,51 @@ class Character():
     #}
 #----------------------Non Initalizing Methods: Set --------------------------------
 
-    def setValue(self,value:str, number:int=0, boolValue:bool=False):
+    def setValue(self,key:str, value):
     #{
-        """ Sets the permanent value of a character to number or boolean given. """
+        """ Sets the permanent stat value of a character to number or boolean given. """
 
         #Set and check values
         valid_values = ['name', 'level', 'critdie_level', 'ac', 'hp', 'strength_bonus', 'feat_bonus', 'feat_die_level', 
                         'agility_bonus', 'stamina_bonus', 'personality_bonus', 'luck_bonus', 'intellect_bonus', 
                         'iswizard', 'iswarrior', 'isthief', 'iscleric']
-        valid_bool_values = ['iswizard', 'iswarrior', 'isthief', 'iscleric']
+        bool_values = ['iswizard', 'iswarrior', 'isthief', 'iscleric']
         try:
-            if value not in valid_values: raise ValueError
+            if key not in valid_values: raise ValueError
             else:
-                #If valid, determine if changing a boolean value.
-                if value not in valid_bool_values: 
-                    self.char_info[value] = number
-                else:
-                    self.char_info[value] = boolValue
+                    if value is bool or value is str:
+                        self.char_info[key] = value
+                    else: raise ValueError
         except ValueError:
-            print("Invalue value to change given. valid: {}\n or {}".format(valid_values, valid_bool_values))
+            print("Invalue value to change given. valid: {}\n or {}".format(valid_values, bool_values))
     #}
-    def setForgotten(self,spellName:str,boolValue:bool=False):
+    def setForgotten(self,spellName):
+    #{
         """
-        Changes a spell to forgotten or not forgotten
+        Changes a spell to forgotten or not forgotten based on 
+        what it already is. (Flips the value)
+        Can enter in a list of spell names (str)
         """
-        #see if the spell is valid:
+        #determine if its a string:
         try:
+            #see if the spell is valid:
             if spellName not in self.spellList:
                 raise ValueError
             else:
                 #get the spell to for
-                for spell in self.infoData['spells']:
+                for spell in self.data['spells']:
                     if spell['name'] == spellName:
-                    #change the spell to the boolean value;
-                        spell['forgotten'] = boolValue
+                    #flip boolean value;
+                        if not spell['forgotten']:
+                            spell['forgotten'] = True
+                        else:
+                            spell['forgotten'] = False
                         break
         except:
             print("Invalid value to change given. \nvalid: {}\n given: {}".format(self.spellList, spellName))
+    #}
     def setSpellcheck(self,spellName:str, number):
+    #{
         """
         Changes a spells spell check value.
         """
@@ -168,20 +176,61 @@ class Character():
                 raise ValueError
             else:
                 #get the spell to for
-                for spell in self.infoData['spells']:
+                for spell in self.data['spells']:
                     if spell['name'] == spellName:
-                    #change the spell to the boolean value;
+                    #change the spell to the value;
                         spell['spell_check'] = number
                         break
         except:
             print("Invalid value to change given. \nvalid: {}\n given: {}".format(self.spellList, spellName))
+    #}
+    def setMultiple(self, changeWhat:str, toChange):
+    #{
+        """
+        Takes a list or dictionary (toChange) and sets multiple spell forotten or character info values.
+        changeWhat recieves a string 'forgotten', 'reset', 'setInfo', and 'change'.
+        'forgotten' : list of spells, use to flip the forgotten or not forgotten.
+        'setInfo' : dict, sets the permanent value of the given key:value pairs.
+        'change' : dict, Sets the temporary valuee of the given key:value pairs.
+        'reset': list of charater info ('ac','hp'), resets the temporary values.
+        List must be a list of strings and are used for forgetting spells.
+        dictionary must be a dictionary of str:int or str:bool pairs.
+
+        """
+        #Confirm type
+        if type(toChange) is list:
+            #Change corresponding type
+            if changeWhat == 'forgotten':
+                for spell in toChange:
+                    if spell in self.spellList:
+                        self.setForgotten(spell)
+            elif changeWhat == 'reset':
+                for change in toChange:
+                    self._resetValue(change)
+            else:
+                print("invalid changeWhat value, list")
+        #Confirm type
+        elif type(toChange) is dict:
+            #Change corresponding type
+            if changeWhat == 'change':
+                keys = toChange.keys()
+                for key in keys:
+                    self.changeValue(key, toChange[key])
+            elif changeWhat == 'setInfo':
+                keys = toChange.keys()
+                for key in keys:
+                    self.setValue(key, toChange[key])
+        else:
+            print("Invalid list/dictionary type. Did not recieve a list or dictionary. \nOR did not recive a valid toChange string.")
+    #}
+
     
 
 #----------------------Non Initalizing Methods: Get --------------------------------
 
     def getSpellInfo(self, spellName, fullInfo:bool=False):
         """
-        Returns info about a spell.
+        Returns string info about a spell.
         Can show full information about a spell or just character specific traits.
         """
         try:
@@ -189,7 +238,7 @@ class Character():
                 raise NameError
             else:
                 #Get specified spell
-                for spell in self.infoData['spells']:
+                for spell in self.data['spells']:
                     if spell['name'] == spellName:
                         #assign spell data specific to character
                         basicInfoData = spell
@@ -210,25 +259,33 @@ class Character():
                                 break
                     #Combine data dictionaries
                     allSpellData= {**basicInfoData, **fullSpellInfo}
-                    return self._charSpelljsonFormatter(allSpellData, fullInfo)
-                return self._charSpelljsonFormatter(basicInfoData, fullInfo)
+                    return charjson.charSpelljsonFormatter(allSpellData, fullInfo)
+                return charjson.charSpelljsonFormatter(basicInfoData, fullInfo)
         except NameError:
             print("ERROR: Not a spellcaster")
+    def getSpellData(self, spellRoll):
+        """
+        Returns spell data for a given spell in a list. Use of this method is to
+        retrieve what happens when a roll is say, 12 or 24 to program as well as
+        throw an error or tell if the spell is forgotten for programming pourposes.
+        [dice_level_effect:int,mercurial_dice_level:int,spell_effect_bonus:int,full_description:string ]
+        
+        """
+    def spells(self):
+        """Returns Spell list"""
+        return self.spellList
 #----------------------Non Initalizing Methods: MISC --------------------------------
-    def _charSpelljsonFormatter(self, data, fullInfo:bool=False):
-        """Formats and return spell data into a pretty formatted string.
-           Helper method to getSpellInfo.
-           """
-        forgotten_status = "not been forgotten" if not data['forgotten'] else "been forgotten"
-        basicInfoString = "Spell {} has {} and its mercirual magic is {}. Spell check for this spell is +{} and you can find more info on page {}.".format(data['name'], forgotten_status, data['mercurial'],data['spell_check'], data['page_number'])
-        #Depedning on basicInfoData then return a different string.
-        if fullInfo:
-            moreInfoString = "\nSpell tier and its effects:\n {}".format(data['1rst_level'])
-            return basicInfoString + moreInfoString
-        else:
-            return basicInfoString
-    def _writeToFile(self):
-        pass
+    def writeToFile(self,resetTemp:bool=False):
+        """
+            Saves existing temporary data and spell data.
+            if resetTemp is True, temporary data and spell data will be reset
+        """
+        #Match up all data
+        self.data['info'][0] = self.char_info
+        self.data['spells'] = self.char_spellData
+        #open and push data to file.
+        with open('{}.json'.format(self.name), 'w') as f:
+            json.dump(self.data, f, indent=2)
 
 
 
@@ -236,13 +293,9 @@ class Character():
 # Test area:
 Charity = Character("charity")
 print(Charity)
-print (Charity.changeValue('hp', 1))
-print(Charity.getSpellInfo("magic_missile"))
-#setValue(value:str, boolValue:bool=False, number:int=0, spellName:str=None):
-Charity.setForgotten('magic_missile', True)
-print(Charity.getSpellInfo("magic_missile", True))
-
-
-    
+Charity.changeValue('hp', 0, True)
+Charity.setForgotten('magic_missile')
+Charity.setValue('ac',11)
+Charity.writeToFile()
 
    
