@@ -74,7 +74,7 @@ class Character():
     #}
 #----------------------Non Initalizing Methods: Change --------------------------------
 
-    def changeValue(self, value:str, number:int=0, reset:bool=False):
+    def changeValue(self, value:str, number:int=0, reset:bool=False): #WORKING
     #{
         """
         Changes the temporary value of the character, ENTER IN POSITIVE OR NEGITIVE. 
@@ -122,7 +122,7 @@ class Character():
     #}
 #----------------------Non Initalizing Methods: Set --------------------------------
 
-    def setValue(self,key:str, value):
+    def setValue(self,key:str, value):#RETEST
     #{
         """ Sets the permanent stat value of a character to number or boolean given. """
 
@@ -140,7 +140,7 @@ class Character():
         except ValueError:
             print("Invalue value to change given. valid: {}\n or {}".format(valid_values, bool_values))
     #}
-    def setForgotten(self,spellName):
+    def setForgotten(self,spellName): #RETEST
     #{
         """
         Changes a spell to forgotten or not forgotten based on 
@@ -165,7 +165,7 @@ class Character():
         except:
             print("Invalid value to change given. \nvalid: {}\n given: {}".format(self.spellList, spellName))
     #}
-    def setSpellcheck(self,spellName:str, number):
+    def setSpellcheck(self,spellName:str, number): #WORKING
     #{
         """
         Changes a spells spell check value.
@@ -184,7 +184,7 @@ class Character():
         except:
             print("Invalid value to change given. \nvalid: {}\n given: {}".format(self.spellList, spellName))
     #}
-    def setMultiple(self, changeWhat:str, toChange):
+    def setMultiple(self, changeWhat:str, toChange): #TEST
     #{
         """
         Takes a list or dictionary (toChange) and sets multiple spell forotten or character info values.
@@ -228,7 +228,7 @@ class Character():
 
 #----------------------Non Initalizing Methods: Get --------------------------------
 
-    def getSpellInfo(self, spellName, fullInfo:bool=False):
+    def getSpellInfo(self, spellName, fullInfo:bool=False):#WORKING
         """
         Returns string info about a spell.
         Can show full information about a spell or just character specific traits.
@@ -263,6 +263,7 @@ class Character():
                 return charjson.charSpelljsonFormatter(basicInfoData, fullInfo)
         except NameError:
             print("ERROR: Not a spellcaster")
+    #@TODO: Make method
     def getSpellData(self, spellRoll):
         """
         Returns spell data for a given spell in a list. Use of this method is to
@@ -271,8 +272,8 @@ class Character():
         [dice_level_effect:int,mercurial_dice_level:int,spell_effect_bonus:int,full_description:string ]
         
         """
-    def spells(self):
-        """Returns Spell list"""
+    def getSpells(self):
+        """Returns known spell list"""
         return self.spellList
 #----------------------Non Initalizing Methods: MISC --------------------------------
     def writeToFile(self,resetTemp:bool=False):
@@ -293,9 +294,6 @@ class Character():
 # Test area:
 Charity = Character("charity")
 print(Charity)
-Charity.changeValue('hp', 0, True)
-Charity.setForgotten('magic_missile')
-Charity.setValue('ac',11)
-Charity.writeToFile()
+
 
    
