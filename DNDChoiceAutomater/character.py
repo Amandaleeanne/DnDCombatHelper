@@ -140,7 +140,7 @@ class Character():
         except ValueError:
             print("Invalue value to change given. valid: {}\n or {}".format(valid_values, bool_values))
     #}
-    def setForgotten(self,spellName): #RETEST
+    def setForgotten(self,spellName): #WORKING
     #{
         """
         Changes a spell to forgotten or not forgotten based on 
@@ -184,13 +184,14 @@ class Character():
         except:
             print("Invalid value to change given. \nvalid: {}\n given: {}".format(self.spellList, spellName))
     #}
-    def setMultiple(self, changeWhat:str, toChange): #TEST
+    def setMultiple(self, changeWhat:str, toChange): #TEST, 'forgotten' workiNG
     #{
         """
         Takes a list or dictionary (toChange) and sets multiple spell forotten or character info values.
         changeWhat recieves a string 'forgotten', 'reset', 'setInfo', and 'change'.
         'forgotten' : list of spells, use to flip the forgotten or not forgotten.
         'setInfo' : dict, sets the permanent value of the given key:value pairs.
+        'spellInfo' : list, gets the basic spell info related to the character.
         'change' : dict, Sets the temporary valuee of the given key:value pairs.
         'reset': list of charater info ('ac','hp'), resets the temporary values.
         List must be a list of strings and are used for forgetting spells.
@@ -198,7 +199,7 @@ class Character():
 
         """
         #Confirm type
-        if type(toChange) is list:
+        if type(toChange) == list:
             #Change corresponding type
             if changeWhat == 'forgotten':
                 for spell in toChange:
@@ -207,10 +208,13 @@ class Character():
             elif changeWhat == 'reset':
                 for change in toChange:
                     self._resetValue(change)
+            elif changeWhat == 'spellInfo':
+                for spell in toChange:
+                    print(self.getSpellInfo(spell))
             else:
                 print("invalid changeWhat value, list")
         #Confirm type
-        elif type(toChange) is dict:
+        elif type(toChange) == dict:
             #Change corresponding type
             if changeWhat == 'change':
                 keys = toChange.keys()
@@ -259,8 +263,8 @@ class Character():
                                 break
                     #Combine data dictionaries
                     allSpellData= {**basicInfoData, **fullSpellInfo}
-                    return charjson.charSpelljsonFormatter(allSpellData, fullInfo)
-                return charjson.charSpelljsonFormatter(basicInfoData, fullInfo)
+                    return self.charSpelljsonFormatter(allSpellData, True)
+                return self.charSpelljsonFormatter(basicInfoData, False)
         except NameError:
             print("ERROR: Not a spellcaster")
     #@TODO: Make method
@@ -287,6 +291,19 @@ class Character():
         #open and push data to file.
         with open('{}.json'.format(self.name), 'w') as f:
             json.dump(self.data, f, indent=2)
+    
+    def charSpelljsonFormatter(self, data:dict, fullInfo:bool=False):
+       """Formats and return spell data into a pretty formatted string.
+          Helper method to getSpellInfo.
+          """
+       forgotten_status = "not been forgotten" if not data['forgotten'] else "been forgotten"
+       basicInfoString = "Spell {}{} has {} and its mercirual magic is {}. Spell check for this spell is +{} and you can find more info on page {}.".format(data['name'][0].upper(),data['name'][1:], forgotten_status, data['mercurial'],data['spell_check'], data['page_number'])
+       #Depedning on basicInfoData then return a different string.
+       if fullInfo:
+           moreInfoString = "\nSpell tier and its effects:\n {}".format(data['1rst_level'])
+           return basicInfoString + moreInfoString
+       else:
+           return basicInfoString
 
 
 
@@ -294,6 +311,8 @@ class Character():
 # Test area:
 Charity = Character("charity")
 print(Charity)
-
+listt = ['magic_missile','sleep']
+print('Type of toChange is:{}'.format(type(list)))
+Charity.setMultiple('spellInfo', listt)
 
    
