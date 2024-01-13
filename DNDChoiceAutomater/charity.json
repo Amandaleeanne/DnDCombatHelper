@@ -4,6 +4,7 @@
       "name": "Charity",
       "level": 2,
       "critdie_level": 6,
+      "crit_table": 3,
       "iswizard": true,
       "iswarrior": false,
       "isthief": false,

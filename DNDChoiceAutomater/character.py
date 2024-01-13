@@ -1,6 +1,5 @@
 
 from roller import Dice
-from jsonhandler import JSONHandler as charjson
 import json
 import os
 '''
