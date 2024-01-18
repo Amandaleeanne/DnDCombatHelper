@@ -5,7 +5,6 @@ import os
 '''
 TODO:
 -Make the Character method create new characters
--Save changed data
 -get what happens at different rolls of a character (might be handled by a different script)
 '''
 class Character():
@@ -18,7 +17,7 @@ class Character():
         #Get name
         self.name = character.lower()
         #if file with name exists:
-        self._get_character()
+        self._init_character()
         #else:
         #make a new character  
     #}
@@ -39,7 +38,7 @@ class Character():
     #}
 
     
-    def _get_character(self):
+    def _init_character(self):
     #{
         """Reads existing JSON file and loads nessisary info into environment"""
         #Load data into current environment
@@ -226,7 +225,13 @@ class Character():
         else:
             print("Invalid list/dictionary type. Did not recieve a list or dictionary. \nOR did not recive a valid toChange string.")
     #}
-
+    
+    def setName(self, name:str):
+        """sets character name and updates file"""
+        self.name = name.lower()
+        #change the fileName to the new character name
+        #change the name in the file to the new name
+        pass
     
 
 #----------------------Non Initalizing Methods: Get --------------------------------
@@ -299,7 +304,7 @@ class Character():
        basicInfoString = "Spell {}{} has {} and its mercirual magic is {}. Spell check for this spell is +{} and you can find more info on page {}.".format(data['name'][0].upper(),data['name'][1:], forgotten_status, data['mercurial'],data['spell_check'], data['page_number'])
        #Depedning on basicInfoData then return a different string.
        if fullInfo:
-           moreInfoString = "\nSpell tier and its effects:\n {}".format(data['1rst_level'])
+           moreInfoString = "\nSpell tier and its effects:\n {}".format("""not done yet""")#data['1rst_level']
            return basicInfoString + moreInfoString
        else:
            return basicInfoString
