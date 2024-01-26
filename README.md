@@ -26,4 +26,4 @@ More complex tasks I wish to achieve are:
    - Create a GUI to make things pretty and handle the character editing.
 
  # Current project phase:
-Programming is on pause as I do research on how to do UI. Currently, I am exploring PyQT for the UI, as I wish for this project to but fully in python. However, this may change and i might find a more sutible programming language to do the UI in.
+Programming is on pause as I do research on how to do UI. Currently, I am exploring PyQT for the UI, as I wish for this project to be built fully in python. However, this may change and i might find a more sutible programming language to do the UI in.
