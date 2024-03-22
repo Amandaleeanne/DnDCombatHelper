@@ -1,3 +1,4 @@
+from roller import Dice
 class ClericSpells():
     def __init__(self, bonus):
         self.bonus = bonus

@@ -9,7 +9,7 @@ def spellcast(bonus):
     else:
         return "Fail {}! Corruption!".format(roll[0])
 #Attack -----------------------------------------------------
-def attackk(bonus, warrior):
+def attack(bonus, warrior):
     roll = Dice.d20(bonus)
     feat_sucsess = False
     #insert natural crit and fumble here.
@@ -44,7 +44,7 @@ def main():
                     user = ""
                 else:
                     warrior = False
-                print(attackk(bonus, warrior))
+                print(attack(bonus, warrior))
             #Exit case
             user = ""
             user = input("do you want to exit? (y/n): ")
