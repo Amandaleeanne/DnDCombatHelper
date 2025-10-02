@@ -27,3 +27,5 @@ More complex tasks I wish to achieve are:
 
  # Current project phase:
 Programming is on pause as I do research on how to do UI. Currently, I am exploring PyQT for the UI, as I wish for this project to be built fully in python. However, this may change and i might find a more sutible programming language to do the UI in.
+
+Update: As my college classes get harder, I have not been able to update this project as much. However, I did learn that Python was not the best choice for this application and have been looking into making a Win32 application or porting all of this into a WebApp for my WebApp class. 
