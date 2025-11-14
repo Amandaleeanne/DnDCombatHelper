@@ -28,5 +28,7 @@ More complex tasks I wish to achieve are:
  # Current project phase:
 Programming is on pause as I do research on how to do UI. Currently, I am exploring PyQT for the UI, as I wish for this project to be built fully in python. However, this may change and I might find a more sutible programming language to do the UI in.
 
-Update: As my college classes get harder, I have not been able to update this project as much. However, I did learn that Python was not the best choice for this application and have been looking into making a Win32 application or porting all of this into a WebApp for my WebApp class. 
-I have decided that I don't want to use a web app because I don't like working with JavaScript. I will now be migrating all of my existing code into either C++ or C#, then building the app and UI, and creating my own custom database to store characters locally (think of game save files).
+Updates: 
+As my college classes get harder, I have not been able to update this project as much. However, I did learn that Python was not the best choice for this application and have been looking into making a Win32 application or porting all of this into a WebApp for my WebApp class. 
+11/14/2025:
+I have decided not to use a web app because I don't like working with JavaScript. I now have two options: Utilize the fact that Python is built on C and manipulate the linking step to create a multi-programmed EXE file, or rewrite my logic in C++ or C#
