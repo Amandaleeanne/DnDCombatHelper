@@ -69,6 +69,7 @@ class Character():
     def _new_character(self):
     #{
         pass
+        #Most likely this method will simply write out a new JSON file with the correct structure.
     #}
 #----------------------Non Initalizing Methods: Change --------------------------------
 
