@@ -29,7 +29,6 @@ def main():
     while not exit:
         validInput = ["y","n","Y","N","attack","a","spell","spellcast","s"]
         spell = ["spell","spellcast","s"]
-        attack = ["attack","a",]
         warrior = False
         user = input("What do you want to do? (a)ttack/(s)pell: ").strip()
         bonus = int(input("bonus: "))

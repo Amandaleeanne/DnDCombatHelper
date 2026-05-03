@@ -3,7 +3,7 @@ I wanted to automate some of my dice rolls during combat.
 Since I have been wanting to expand my Python skills, I thought using Python for the project would be perfect as I have been learning how to use Python to automate tasks.
 
 # Overview
-This project will allow me to streamline the dice process and easily attack and look up spells. Allowing for faster gameplay and more things that can be done in one session!
+This project will allow me to streamline the dice process (with as accurate of a dice roll as possible) and easily attack and look up spells. Allowing for faster gameplay and more things that can be done in one session!
 
 To reduce complexity, this application will be using the ruleset of Dungeon Crawl Classic
 
